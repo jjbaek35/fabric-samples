@@ -91,7 +91,7 @@ class FabPMU extends Contract {
         }
     }
 
-    async changepmuOwner(ctx, pmuNumber, newOwner) {
+    async changePMUOwner(ctx, pmuNumber, newOwner) {
         console.info('============= START : changepmuresistance ===========');
 
         const pmuAsBytes = await ctx.stub.getState(pmuNumber); // get the pmu from chaincode state

@@ -40,9 +40,13 @@ async function main() {
         const contract = network.getContract('fabpmu');
 
         // Submit the specified transaction.
-        // createCar transaction - requires 5 argument, ex: ('createCar', 'CAR12', 'Honda', 'Accord', 'Black', 'Tom')
-        // changeCarOwner transaction - requires 2 args , ex: ('changeCarOwner', 'CAR10', 'Dave')
-        
+        // createCar transaction - requires 5 argument, ex: ('createPMU', 'PMU2', 'Honda', 'Accord', 'Black', 'Tom')
+        // changeCarOwner transaction - requires 2 args , ex: ('changePMUOwner', 'CAR1', 'Dave')
+
+        //await contract.submitTransaction('changePMUOwner', 'PMU0', 'SINE');
+        // console.log('Transaction has been submitted');        
+
+
         // for (let i = 0; i < cars.length; i++) {
             for (let i = 0; i < 10; i++) {
             //cars[i].docType = 'car';
