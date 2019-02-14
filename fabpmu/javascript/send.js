@@ -55,25 +55,23 @@ async function main() {
 
 
         // for (let i = 0; i < cars.length; i++) {
-            for (let i = 0; i < 10; i++) {
+            /* for (let i = 0; i < 10; i++) {
             //cars[i].docType = 'car';
             //await ctx.stub.putState('CAR' + i, Buffer.from(JSON.stringify(cars[i])));
             //console.info('Added <--> ', cars[i]);
 
-            await contract.submitTransaction('createPMU', 'PMU'+i, time, '150.00', '150.00', '150.00');
+            await contract.submitTransaction('createPMU', 'PMU'+i, '020717', '150.00', '150.00', '150.00');
             console.log('Transaction has been submitted\n');
-        } 
+        } */
 
-//        await contract.submitTransaction('createCar', 'PMU0', 'Honda', 'Accord', 'Black', 'Tom');
-       
+//        await contract.submitTransaction('createCar', 'CAR12', 'Honda', 'Accord', 'Black', 'Tom');
+
+        
 //        console.log('Transaction has been submitted');
 
         // arguments
-        // await contract.submitTransaction('createPMU', process.argv[2], process.argv[3], process.argv[4], process.argv[5], process.argv[6]);
-        
-
-        
-
+//        await contract.submitTransaction('createPMU', process.argv[2], process.argv[3], process.argv[4], process.argv[5], process.argv[6]);
+        await contract.submitTransaction('createPMU', process.argv[2], time, process.argv[3], process.argv[4], process.argv[5]);
 
         
         console.log('Transaction has been submitted');

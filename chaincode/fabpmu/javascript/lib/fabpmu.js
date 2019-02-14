@@ -13,16 +13,16 @@ class FabPMU extends Contract {
         console.info('============= START : Initialize Ledger ===========');
         const pmus = [
             {
-                dt: '1111/11/11/2019',
-                voltage: 10.05,
+                dt: '02-13-2019 13:30:44',
                 current: 10.05,
                 resistance: 10.05,
+                voltage: 10.05,  
             },
             {
-                dt: '1112/11/11/2019',
-                voltage: 10.05,
+                dt: '02-13-2019 13:30:44',
                 current: 10.05,
                 resistance: 10.05,
+                voltage: 10.05,                
             },            
         ];
 
@@ -43,15 +43,15 @@ class FabPMU extends Contract {
         return pmuAsBytes.toString();
     }
 
-    async createPMU(ctx, pmuNumber, dt, voltage, current, resistance) {
+    async createPMU(ctx, pmuNumber, dt, current, resistance, voltage) {
         console.info('============= START : Create pmu ===========');
 
         const pmu = {
             dt,    // date and time
             devType: 'pmu',  // device type
-            voltage,
             current,
             resistance,
+            voltage,
         };
 
         await ctx.stub.putState(pmuNumber, Buffer.from(JSON.stringify(pmu)));
