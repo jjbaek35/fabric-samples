@@ -60,8 +60,10 @@ class FabPMU extends Contract {
     }
 
     async queryAllPMUs(ctx) {
-        const startKey = 'PMU0';
-        const endKey = 'PMU999';
+        //const startKey = 'PMU0';
+        //const endKey = 'PMU999';
+        const startKey = 'I85200000';
+        const endKey = 'I85299999';
 
         const iterator = await ctx.stub.getStateByRange(startKey, endKey);
 
