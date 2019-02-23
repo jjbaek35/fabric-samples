@@ -13,4 +13,9 @@ for zipcode in zipcode_list:
             test_command += data[1:] + ' '
         print(test_command)
     # The following line need to be commented out while running the node.js application
-    # result= subprocess.check_output(test_command,shell=True)
+        result= subprocess.check_output(test_command,shell=True)
+        print(result)
+
+#s= 'node send.js PMU001 1 1 1'
+#result= subprocess.check_output(test_command,shell=True)
+#print(result)
