@@ -10,8 +10,13 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+<<<<<<< HEAD
     "fabric-network": "unstable",
     "fabric-client": "unstable",
+=======
+    "fabric-network": "~1.4.0",
+    "fabric-client": "~1.4.0",
+>>>>>>> temp
     "js-yaml": "^3.12.0"
   },
   "devDependencies": {

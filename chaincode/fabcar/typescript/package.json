@@ -21,8 +21,13 @@
     "author": "Hyperledger",
     "license": "Apache-2.0",
     "dependencies": {
+<<<<<<< HEAD
         "fabric-contract-api": "unstable",
         "fabric-shim": "unstable"
+=======
+        "fabric-contract-api": "~1.4.0",
+        "fabric-shim": "~1.4.0"
+>>>>>>> temp
     },
     "devDependencies": {
         "@types/chai": "^4.1.7",
