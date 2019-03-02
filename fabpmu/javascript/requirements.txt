@@ -1,0 +1,5 @@
+numpy>=1.15.3
+pandas>=0.23.0
+scipy>=1.1.0
+ipaddress>=1.0.22
+pymodbus>=2.1.0
