@@ -1,4 +1,6 @@
 import numpy as np
+import opendssdirect as dss
+import random
 
 
 def lossless_distribution_power_flow(dflow, inverter_list, total_iteration=300, tol=1e-3):
@@ -32,3 +34,13 @@ def lossless_distribution_power_flow(dflow, inverter_list, total_iteration=300, 
                     # inverterlist[i].updateRegister()
                 break
     return voltage
+
+
+def opendss_power_flow(filename='Inverter_PMU.dss'):
+
+    dss.run_command('Compile ' + filename)
+    # dss.Text.Command('Set Loadmult= {}'.format(random.uniform(0.85,1.15)))
+    # dss.Text.Command('BatchEdit PVSystem..* pctPmpp={}'.format(random.uniform(80,95)))
+    dss.Solution.Solve()
+
+    return dss

@@ -6,13 +6,13 @@ Created on Wed Feb 20 01:03:54 2019
 """
 
 import warnings
-
+import opendssdirect as dss
 import pandas as pd
 
 from DistributionPoweFlow import *
 from Inverter import *
 from Peer import *
-from power_flow_solution import lossless_distribution_power_flow
+from power_flow_solution import *
 
 warnings.filterwarnings("ignore")
 
@@ -61,6 +61,44 @@ def generate_inverter_data(simulate_bf_chip, file_name='Config.csv'):
         return inverter_data[:-2]
 
 
-if __name__ == '__main__':
-    print('Transaction to be submitted: ', generate_inverter_data(simulate_bf_chip=False))
+def generate_combined_data(simulate_bf_chip=False, file_name='IDFile.csv'):
+    device_ids = pd.read_csv(file_name)
+    dataset = dict()
+    dss = opendss_power_flow()
+    # print(dss.Lines.AllNames())
+    # print('PV KW:{}'.format(dss.PVsystems.kW()))
+    # print('PV KVAR:{}'.format(dss.PVsystems.kvar()))
+    dss.Circuit.SetActiveBus('632')
+    inverter_voltage = dss.Bus.VMagAngle()
+    inverter_voltage = inverter_voltage[::2]  # only extracting the voltage values
+    # print(sum(inverter_voltage)/len(inverter_voltage))
+    # # print('Solar Bus Voltage Angle:{}'.format(dss.Bus.VMagAngle()))
+    # # print('Solar Bus KV Base:{}'.format(dss.Bus.kVBase()))
+    dataset[device_ids.iloc[0]['DEVICE_ID']] = [round(sum(inverter_voltage) / len(inverter_voltage),3),  round(dss.PVsystems.kW(),2), round(dss.PVsystems.kvar(),2)]
+    #
+    # # dss.Circuit.SetActiveElement('cable 01')
+    # # print('Solar Bus Current Flow:{}'.format(dss.CktElement.CurrentsMagAng()))
+    # PMU data section
+    dss.Circuit.SetActiveBus('692')
+    pmu_voltage = dss.Bus.VMagAngle()
+    # Getting the actual voltage value
+    # print('PMU Bus KV Base:{}'.format(dss.Bus.kVBase()))
+    # Current Flow
+    dss.Circuit.SetActiveElement('Line.692_675')
+    # print(dss.CktElement.Name())
+    # print('PMU Bus Current Flow:{}'.format(dss.CktElement.CurrentsMagAng()))
+    pmu_current = dss.CktElement.CurrentsMagAng()
+    pmu_current = pmu_current[0:6]  # Only retrieving information from the sending node
+    # print(pmu_voltage)
+    # print(list(pmu_voltage) + list(pmu_current))
+    pmu_voltage = [round(item,4) for item in pmu_voltage]
+    pmu_current = [round(item, 4) for item in pmu_current]
+    dataset[device_ids.iloc[1]['DEVICE_ID']] = list(pmu_voltage) + list(pmu_current)
+    return dataset
 
+
+if __name__ == '__main__':
+    dataset = generate_combined_data()
+    print(dataset)
+
+    # print('Transaction to be submitted: ', generate_inverter_data(simulate_bf_chip=False))
