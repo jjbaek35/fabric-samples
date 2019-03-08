@@ -5,14 +5,14 @@
 
 'use strict';
 
-const { Contract } = require('fabric-contract-api');
+const { Contract } = require('fabric-contract-api'); //SDK library to asset with writing the logic
 
 class FabPMU extends Contract {
 
     async initLedger(ctx) {
         console.info('============= START : Initialize Ledger ===========');
         const pmus = [
-            {
+         /* {
                 dt: '02-13-2019 13:30:44',
                 current: 10.05,
                 resistance: 10.05,
@@ -23,7 +23,7 @@ class FabPMU extends Contract {
                 current: 10.05,
                 resistance: 10.05,
                 voltage: 10.05,                
-            },            
+            },   */       
         ];
 
         for (let i = 0; i < pmus.length; i++) {
@@ -34,36 +34,58 @@ class FabPMU extends Contract {
         console.info('============= END : Initialize Ledger ===========');
     }
 
-    async queryPMU(ctx, pmuNumber) {
-        const pmuAsBytes = await ctx.stub.getState(pmuNumber); // get the pmu from chaincode state
+    async queryPMU(ctx,devID) {
+        const pmuAsBytes = await ctx.stub.getState(devID); // get the pmu from chaincode state
         if (!pmuAsBytes || pmuAsBytes.length === 0) {
-            throw new Error(`${pmuNumber} does not exist`);
+            throw new Error(`${devID} does not exist`);
         }
         console.log(pmuAsBytes.toString());
         return pmuAsBytes.toString();
     }
 
-    async createPMU(ctx, pmuNumber, dt, current, resistance, voltage) {
+
+    async createPMU(ctx, dt, devID, V1M, V1A, V2M, V2A, V3M, V3A, I1M, I1A, I2M, I2A, I3M, I3A) {
         console.info('============= START : Create pmu ===========');
 
         const pmu = {
-            dt,    // date and time
+            devID,    // deviceID (P or I + zip + number)
             devType: 'pmu',  // device type
-            current,
-            resistance,
-            voltage,
+            V1M,
+            V1A,
+            V2M,
+            V2A,
+            V3M,
+            V3A,
+            I1M,
+            I1A,
+            I2M,
+            I2A,
+            I3M,
+            I3A,
         };
 
-        await ctx.stub.putState(pmuNumber, Buffer.from(JSON.stringify(pmu)));
-        //await ctx.stub.putState(pmuNumber, Buffer.from(pmu);
-        console.info('============= END : Create pmu ===========');
+        await ctx.stub.putState(dt, Buffer.from(JSON.stringify(pmu)));
+        console.info('============= END : Create PMU ===========');
+    }
+
+    async createInverter(ctx, dt, devID, V, P, Q) {
+        console.info('============= START : Create inverter ===========');
+
+        const inverter = {
+            devID,    // deviceID (P or I + zip + number)
+            devType: 'inverter',  // device type
+            V,
+            P,
+            Q,
+        };
+
+        await ctx.stub.putState(dt, Buffer.from(JSON.stringify(inverter)));
+        console.info('============= END : Create inverter ===========');
     }
 
     async queryAllPMUs(ctx) {
-        //const startKey = 'PMU0';
-        //const endKey = 'PMU999';
-        const startKey = 'I85200000';
-        const endKey = 'I85299999';
+        const startKey = '2019-01-01-00:00:00';
+        const endKey = '2029-01-01-00:00:00';
 
         const iterator = await ctx.stub.getStateByRange(startKey, endKey);
 
@@ -73,7 +95,6 @@ class FabPMU extends Contract {
 
             if (res.value && res.value.value.toString()) {
                 console.log(res.value.value.toString('utf8'));
-
                 const Key = res.value.key;
                 let Record;
                 try {
@@ -93,20 +114,19 @@ class FabPMU extends Contract {
         }
     }
 
-    async changePMUOwner(ctx, pmuNumber, newOwner) {
+    async changePMUOwner(ctx, devID, newOwner) {
         console.info('============= START : changepmuresistance ===========');
 
-        const pmuAsBytes = await ctx.stub.getState(pmuNumber); // get the pmu from chaincode state
+        const pmuAsBytes = await ctx.stub.getState(devID); // get the devID from chaincode state
         if (!pmuAsBytes || pmuAsBytes.length === 0) {
-            throw new Error(`${pmuNumber} does not exist`);
+            throw new Error(`${devID} does not exist`);
         }
         const pmu = JSON.parse(pmuAsBytes.toString());
         pmu.resistance = newOwner;
 
-        await ctx.stub.putState(pmuNumber, Buffer.from(JSON.stringify(pmu)));
+        await ctx.stub.putState(devID, Buffer.from(JSON.stringify(pmu)));
         console.info('============= END : changepmuresistance ===========');
     }
-
 }
 
 module.exports = FabPMU;

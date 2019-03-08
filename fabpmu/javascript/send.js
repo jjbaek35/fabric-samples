@@ -9,7 +9,8 @@ const args = process.argv; // for arguments processing
 
 const dt = require('date-utils');
 var newDate = new Date();
-var time = newDate.toFormat('MM-DD-YYYY HH24:MI:SS');
+var time = newDate.toFormat('YYYY-MM-DD-HH24:MI:SS');
+//var time = time2.split("-").map(Number);
 
 
 const { FileSystemWallet, Gateway } = require('fabric-network');
@@ -46,34 +47,14 @@ async function main() {
         // Get the contract from the network.
         const contract = network.getContract('fabpmu');
 
-        // Submit the specified transaction.
-        // createCar transaction - requires 5 argument, ex: ('createPMU', 'PMU2', 'Honda', 'Accord', 'Black', 'Tom')
-        // changeCarOwner transaction - requires 2 args , ex: ('changePMUOwner', 'CAR1', 'Dave')
-
-        //await contract.submitTransaction('changePMUOwner', 'PMU0', 'SINE');
-        // console.log('Transaction has been submitted');        
-
-
-        // for (let i = 0; i < cars.length; i++) {
-            /* for (let i = 0; i < 10; i++) {
-            //cars[i].docType = 'car';
-            //await ctx.stub.putState('CAR' + i, Buffer.from(JSON.stringify(cars[i])));
-            //console.info('Added <--> ', cars[i]);
-
-            await contract.submitTransaction('createPMU', 'PMU'+i, '020717', '150.00', '150.00', '150.00');
-            console.log('Transaction has been submitted\n');
-        } */
-
-//        await contract.submitTransaction('createCar', 'CAR12', 'Honda', 'Accord', 'Black', 'Tom');
-
-        
-//        console.log('Transaction has been submitted');
-
-        // arguments
-//        await contract.submitTransaction('createPMU', process.argv[2], process.argv[3], process.argv[4], process.argv[5], process.argv[6]);
-        await contract.submitTransaction('createPMU', process.argv[2], time, process.argv[3], process.argv[4], process.argv[5]);
-
-        
+	var str = process.argv[2];      
+	if (str.indexOf("P",0) == 0) {
+ 	await contract.submitTransaction('createPMU', time, process.argv[2], process.argv[3], process.argv[4], process.argv[5], process.argv[6], process.argv[7], process.argv[8], process.argv[9], process.argv[10], process.argv[11], process.argv[12], process.argv[13], process.argv[14]);
+	} else if (str.indexOf("I",0) == 0) {
+        await contract.submitTransaction('createInverter', time, process.argv[2], process.argv[3], process.argv[4], process.argv[5]);
+	} else {
+	console.log('* Unknown Device ID is submitted *');
+	}
         console.log('Transaction has been submitted');
 
 

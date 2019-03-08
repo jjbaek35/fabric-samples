@@ -36,7 +36,7 @@ async function main() {
         // Get the network (channel) our contract is deployed to.
         const network = await gateway.getNetwork('mychannel');
 
-        // Get the contract from the network.
+        // Get the contract from the network. 
         const contract = network.getContract('fabpmu');
 
         // Evaluate the specified transaction.
